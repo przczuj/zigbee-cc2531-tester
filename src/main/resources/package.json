@@ -1,0 +1,15 @@
+{
+  "name": "zigbee-cc2531-tester",
+  "version": "0.1.0",
+  "description": "Tester for Texas Instruments' CC2531 module attached to Raspberry Pi.",
+  "license": "MIT License",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "dependencies": {
+    "zigbee-herdsman": "0.14.68"
+  }
+}
