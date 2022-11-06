@@ -6,15 +6,15 @@ Tester for Texas Instruments' [CC2531] module attached to [Raspberry Pi].
 
 [JRE] 8 or higher
 
-Note: Unfortunately some underlying dependency inexplicably requires Python.
+Note: Unfortunately some underlying dependency inexplicably requires Python 3.6 or higher.
 
 ## Usage
 
 Start it using [Maven Wrapper]:
 - On MacOS / Linux 
-   ```
-   ./mvnw verify
-   ```
+  ```
+  ./mvnw verify
+  ```
 - On Windows
   ```
   mvnw.cmd verify
