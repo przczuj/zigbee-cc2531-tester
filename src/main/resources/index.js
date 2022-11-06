@@ -10,6 +10,22 @@ const coordinator = new Controller({
   databasePath: DB
 })
 
+function switchLight(ieeeAddr, state) {
+  const lightSwitch = coordinator.getDeviceByIeeeAddr(ieeeAddr)
+  console.log('Light Switch: ' + JSON.stringify(lightSwitch))
+
+  const endpoint = lightSwitch.getEndpoint(1)
+  console.log('Light Switch endpoint: ' + JSON.stringify(endpoint))
+
+  if (state) {
+    endpoint.command(6, 1)
+  } else {
+    endpoint.command(6, 0)
+  }
+}
+
+setTimeout(function() { switchLight('0xa4c1389f36bcf406', true) }, 10000)
+
 coordinator.on('message', async (msg) => {
   console.log(msg)
 })
@@ -29,3 +45,4 @@ coordinator
       }
     })
   })
+
