@@ -24,7 +24,8 @@ function switchLight(ieeeAddr, state) {
   }
 }
 
-setTimeout(function() { switchLight('0xa4c1389f36bcf406', true) }, 10000)
+var state = false
+setInterval(function() { switchLight('0xa4c1389f36bcf406', state); state = !state }, 4000)
 
 coordinator.on('message', async (msg) => {
   console.log(msg)
