@@ -11,7 +11,7 @@ const coordinator = new Controller({
 })
 
 coordinator.on('message', async (msg) => {
-  console.log(msg)
+  console.log(`type ${msg.type}; devID ${msg.device.ID}; endpointID ${msg.endpoint.ID}; profileID ${msg.endpoint.profileID}; groupID ${msg.groupID}; cluster ${msg.groupID}; data ${msg.data}`)
 })
 
 coordinator.start()
