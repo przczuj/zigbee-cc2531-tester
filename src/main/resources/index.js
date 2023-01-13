@@ -48,7 +48,7 @@ app.get('/', function (req, res) {
 app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:attributeId', function (req, res) {
   coordinator
     .getDeviceByIeeeAddr(req.params.ieeeAddr)
-    .getEndpoint(req.params.endpoint)
+    .getEndpoint(parseInt(req.params.endpoint))
     .read(req.params.clusterKey, [req.params.attributeId]);
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
@@ -59,7 +59,7 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:att
   attributes[req.params.attributeId] = req.params.attributeValue;
   coordinator
     .getDeviceByIeeeAddr(req.params.ieeeAddr)
-    .getEndpoint(req.params.endpoint)
+    .getEndpoint(parseInt(req.params.endpoint))
     .write(req.params.clusterKey, attributes);
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
@@ -68,7 +68,7 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:att
 app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/command/:commandKey', function (req, res) {
   coordinator
     .getDeviceByIeeeAddr(req.params.ieeeAddr)
-    .getEndpoint(req.params.endpoint)
+    .getEndpoint(parseInt(req.params.endpoint))
     .command(req.params.clusterKey, req.params.commandKey, JSON.parse(req.query.payload));
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
