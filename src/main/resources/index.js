@@ -46,30 +46,46 @@ app.get('/', function (req, res) {
 });
 
 app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:attributeId', function (req, res) {
+  const ieeeAddr = req.params.ieeeAddr;
+  const endpoint = parseInt(req.params.endpoint)
+  const clusterKey = parseInt(req.params.clusterKey)
+  const attributes = [ parseInt(req.params.attributeId) ];
+
   coordinator
-    .getDeviceByIeeeAddr(req.params.ieeeAddr)
-    .getEndpoint(parseInt(req.params.endpoint))
-    .read(req.params.clusterKey, [req.params.attributeId]);
+    .getDeviceByIeeeAddr(ieeeAddr)
+    .getEndpoint(endpoint)
+    .read(clusterKey, attributes);
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
 app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:attributeId/value/:attributeValue', function (req, res) {
+  const ieeeAddr = req.params.ieeeAddr;
+  const endpoint = parseInt(req.params.endpoint)
+  const clusterKey = parseInt(req.params.clusterKey)
+  const attributeId = parseInt(req.params.attributeId)
   const attributes = {};
-  attributes[req.params.attributeId] = req.params.attributeValue;
+  attributes[attributeId] = parseInt(req.params.attributeValue);
+
   coordinator
-    .getDeviceByIeeeAddr(req.params.ieeeAddr)
-    .getEndpoint(parseInt(req.params.endpoint))
-    .write(req.params.clusterKey, attributes);
+    .getDeviceByIeeeAddr(ieeeAddr)
+    .getEndpoint(endpoint)
+    .write(clusterKey, attributes);
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
 app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/command/:commandKey', function (req, res) {
+  const ieeeAddr = req.params.ieeeAddr;
+  const endpoint = parseInt(req.params.endpoint)
+  const clusterKey = parseInt(req.params.clusterKey)
+  const commandKey = parseInt(req.params.commandKey)
+  const payload = JSON.parse(req.query.payload);
+
   coordinator
-    .getDeviceByIeeeAddr(req.params.ieeeAddr)
-    .getEndpoint(parseInt(req.params.endpoint))
-    .command(req.params.clusterKey, req.params.commandKey, JSON.parse(req.query.payload));
+    .getDeviceByIeeeAddr(ieeeAddr)
+    .getEndpoint(endpoint)
+    .command(clusterKey, commandKey, payload);
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
