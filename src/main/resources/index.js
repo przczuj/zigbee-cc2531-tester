@@ -10,7 +10,8 @@ const PORT = 8080;
 
 const coordinator = new Controller({
   serialPort: { path: SERIAL },
-  databasePath: DB
+  databasePath: DB,
+  disableRecovery: false
 });
 
 coordinator.on('message', async (msg) => {
