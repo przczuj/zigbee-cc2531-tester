@@ -10,6 +10,7 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
-    "zigbee-herdsman": "0.14.68"
+    "zigbee-herdsman": "0.14.68",
+    "express": "4.18.2"
   }
 }
