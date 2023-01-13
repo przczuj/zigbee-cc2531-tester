@@ -35,10 +35,14 @@ function getDatabaseContent() {
   return prettyJsonDb;
 }
 
+function wrapContentInPreWrap(content) {
+  return `<html><body style="white-space: pre-wrap;">${content}</body></html>`;
+}
+
 const app = express();
 
 app.get('/', function (req, res) {
-  res.send(getDatabaseContent());
+  res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
 app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:attributeId', function (req, res) {
@@ -47,7 +51,7 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:att
     .getEndpoint(req.params.endpoint)
     .read(req.params.clusterKey, [req.params.attributeId]);
 
-  res.send(getDatabaseContent());
+  res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
 app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:attributeId/value/:attributeValue', function (req, res) {
@@ -58,7 +62,7 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:att
     .getEndpoint(req.params.endpoint)
     .write(req.params.clusterKey, attributes);
 
-  res.send(getDatabaseContent());
+  res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
 app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/command/:commandKey', function (req, res) {
@@ -67,7 +71,7 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/command/:comma
     .getEndpoint(req.params.endpoint)
     .command(req.params.clusterKey, req.params.commandKey, JSON.parse(req.query.payload));
 
-  res.send(getDatabaseContent());
+  res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
 app.listen(PORT, () => {
