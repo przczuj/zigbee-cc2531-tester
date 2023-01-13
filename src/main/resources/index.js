@@ -10,8 +10,7 @@ const PORT = 8080;
 
 const coordinator = new Controller({
   serialPort: { path: SERIAL },
-  databasePath: DB,
-  disableRecovery: false
+  databasePath: DB
 });
 
 coordinator.on('message', async (msg) => {
@@ -52,10 +51,14 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:att
   const clusterKey = parseInt(req.params.clusterKey)
   const attributes = [ parseInt(req.params.attributeId) ];
 
-  coordinator
-    .getDeviceByIeeeAddr(ieeeAddr)
-    .getEndpoint(endpoint)
-    .read(clusterKey, attributes);
+  try {
+    coordinator
+      .getDeviceByIeeeAddr(ieeeAddr)
+      .getEndpoint(endpoint)
+      .read(clusterKey, attributes);
+  } catch(error) {
+    console.error(`Failed to write attribute`, error);
+  }
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
@@ -68,10 +71,14 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:att
   const attributes = {};
   attributes[attributeId] = parseInt(req.params.attributeValue);
 
-  coordinator
-    .getDeviceByIeeeAddr(ieeeAddr)
-    .getEndpoint(endpoint)
-    .write(clusterKey, attributes);
+  try {
+    coordinator
+      .getDeviceByIeeeAddr(ieeeAddr)
+      .getEndpoint(endpoint)
+      .write(clusterKey, attributes);
+  } catch(error) {
+    console.error(`Failed to write attribute`, error);
+  }
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
@@ -83,10 +90,14 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/command/:comma
   const commandKey = parseInt(req.params.commandKey)
   const payload = JSON.parse(req.query.payload);
 
-  coordinator
-    .getDeviceByIeeeAddr(ieeeAddr)
-    .getEndpoint(endpoint)
-    .command(clusterKey, commandKey, payload);
+  try {
+    coordinator
+      .getDeviceByIeeeAddr(ieeeAddr)
+      .getEndpoint(endpoint)
+      .command(clusterKey, commandKey, payload);
+  } catch(error) {
+    console.error(`Failed to send command`, error);
+  }
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
