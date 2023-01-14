@@ -43,6 +43,9 @@
                         <phase>integration-test</phase>
                         <configuration>
                             <arguments>start</arguments>
+                            <environmentVariables>
+                                <DEBUG>zigbee-herdsman:adapter:zStack:unpi:*</DEBUG>
+                            </environmentVariables>
                         </configuration>
                     </execution>
                 </executions>
