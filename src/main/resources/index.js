@@ -8,6 +8,10 @@ const SERIAL = '/dev/ttyACM0';
 const DB = './devices.db';
 const PORT = 8080;
 
+process.on('uncaughtException', function (err) {
+  console.error('Recovering from uncaught exception', err);
+});
+
 const coordinator = new Controller({
   serialPort: { path: SERIAL },
   databasePath: DB
