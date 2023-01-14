@@ -21,19 +21,15 @@ coordinator.on('message', async (msg) => {
   console.log(`type ${msg.type}; devID ${msg.device.ID}; endpointID ${msg.endpoint.ID}; profileID ${msg.endpoint.profileID}; groupID ${msg.groupID}; cluster ${msg.groupID}; linkquality ${msg.linkquality}; data ${msg.data.toString('hex')}`);
 });
 
-try {
-  coordinator.start()
-    .then(async () => {
-      console.log('started with device', SERIAL);
-      coordinator.permitJoin(600, (err) => {
-        if (err) {
-          console.error(err);
-        }
-      });
+coordinator.start()
+  .then(async () => {
+    console.log('started with device', SERIAL);
+    coordinator.permitJoin(600, (err) => {
+      if (err) {
+        console.error(err);
+      }
     });
-} catch (error) {
-  console.error(`Failure happened on coordinator start`, error)
-}
+  });
 
 function getDatabaseContent() {
   const rawJsonlDb = fs.readFileSync(DB, 'utf8');
@@ -59,14 +55,10 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:att
   const clusterKey = parseInt(req.params.clusterKey)
   const attributes = [ parseInt(req.params.attributeId) ];
 
-  try {
-    coordinator
-      .getDeviceByIeeeAddr(ieeeAddr)
-      .getEndpoint(endpoint)
-      .read(clusterKey, attributes);
-  } catch(error) {
-    console.error(`Failed to write attribute`, error);
-  }
+  coordinator
+    .getDeviceByIeeeAddr(ieeeAddr)
+    .getEndpoint(endpoint)
+    .read(clusterKey, attributes);
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
@@ -79,14 +71,10 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:att
   const attributes = {};
   attributes[attributeId] = parseInt(req.params.attributeValue);
 
-  try {
-    coordinator
-      .getDeviceByIeeeAddr(ieeeAddr)
-      .getEndpoint(endpoint)
-      .write(clusterKey, attributes);
-  } catch(error) {
-    console.error(`Failed to write attribute`, error);
-  }
+  coordinator
+    .getDeviceByIeeeAddr(ieeeAddr)
+    .getEndpoint(endpoint)
+    .write(clusterKey, attributes);
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
@@ -98,14 +86,10 @@ app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/command/:comma
   const commandKey = parseInt(req.params.commandKey)
   const payload = JSON.parse(req.query.payload);
 
-  try {
-    coordinator
-      .getDeviceByIeeeAddr(ieeeAddr)
-      .getEndpoint(endpoint)
-      .command(clusterKey, commandKey, payload);
-  } catch(error) {
-    console.error(`Failed to send command`, error);
-  }
+  coordinator
+    .getDeviceByIeeeAddr(ieeeAddr)
+    .getEndpoint(endpoint)
+    .command(clusterKey, commandKey, payload);
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
