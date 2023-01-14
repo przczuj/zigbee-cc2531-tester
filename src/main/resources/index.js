@@ -17,15 +17,19 @@ coordinator.on('message', async (msg) => {
   console.log(`type ${msg.type}; devID ${msg.device.ID}; endpointID ${msg.endpoint.ID}; profileID ${msg.endpoint.profileID}; groupID ${msg.groupID}; cluster ${msg.groupID}; linkquality ${msg.linkquality}; data ${msg.data.toString('hex')}`);
 });
 
-coordinator.start()
-  .then(async () => {
-    console.log('started with device', SERIAL);
-    coordinator.permitJoin(600, (err) => {
-      if (err) {
-        console.error(err);
-      }
+try {
+  coordinator.start()
+    .then(async () => {
+      console.log('started with device', SERIAL);
+      coordinator.permitJoin(600, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
     });
-  });
+} catch (error) {
+  console.error(`Failure happened on coordinator start`, error)
+}
 
 function getDatabaseContent() {
   const rawJsonlDb = fs.readFileSync(DB, 'utf8');
