@@ -18,7 +18,7 @@ const coordinator = new Controller({
 });
 
 coordinator.on('message', async (msg) => {
-  console.log(`type ${msg.type}; devID ${msg.device.ID}; endpointID ${msg.endpoint.ID}; profileID ${msg.endpoint.profileID}; groupID ${msg.groupID}; cluster ${msg.groupID}; linkquality ${msg.linkquality}; data ${msg.data.toString('hex')}`);
+  console.log(`type ${msg.type}; devID ${msg.device.ID}; endpointID ${msg.endpoint.ID}; profileID ${msg.endpoint.profileID}; groupID ${msg.groupID}; cluster ${msg.groupID}; linkquality ${msg.linkquality}; data ${JSON.stringify(msg.data)}`);
 });
 
 coordinator.start()
