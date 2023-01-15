@@ -79,7 +79,7 @@ app.get('/devices/:ieeeAddr/endpoints/:endpointId/clusters/:clusterKey/commands/
 
   coordinator
     .getDeviceByIeeeAddr(ieeeAddr)
-    .getEndpoint(endpoint)
+    .getEndpoint(endpointId)
     .command(clusterKey, commandKey, payload);
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
