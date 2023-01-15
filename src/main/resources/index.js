@@ -49,37 +49,28 @@ app.get('/', function (req, res) {
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
-app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:attributeId', function (req, res) {
+app.get('/devices/:ieeeAddr/endpoints/:endpoint/clusters/:clusterKey/attributes/:attributes', function (req, res) {
   const ieeeAddr = req.params.ieeeAddr;
   const endpoint = parseInt(req.params.endpoint)
   const clusterKey = parseInt(req.params.clusterKey)
-  const attributes = [ parseInt(req.params.attributeId) ];
+  const attributes = JSON.parse(req.params.attributes);
 
-  coordinator
+  const endpoint = coordinator
     .getDeviceByIeeeAddr(ieeeAddr)
-    .getEndpoint(endpoint)
-    .read(clusterKey, attributes);
+    .getEndpoint(endpoint);
+
+  if (Array.isArray(attributes)) {
+    endpoint.read(clusterKey, attributes);
+  } else if (typeof attributes === 'number') {
+    endpoint.read(clusterKey, [ attributes ]);
+  } else {
+    endpoint.write(clusterKey, attributes);
+  }
 
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
-app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/attribute/:attributeId/value/:attributeValue', function (req, res) {
-  const ieeeAddr = req.params.ieeeAddr;
-  const endpoint = parseInt(req.params.endpoint)
-  const clusterKey = parseInt(req.params.clusterKey)
-  const attributeId = parseInt(req.params.attributeId)
-  const attributes = {};
-  attributes[attributeId] = parseInt(req.params.attributeValue);
-
-  coordinator
-    .getDeviceByIeeeAddr(ieeeAddr)
-    .getEndpoint(endpoint)
-    .write(clusterKey, attributes);
-
-  res.send(wrapContentInPreWrap(getDatabaseContent()));
-});
-
-app.get('/device/:ieeeAddr/endpoint/:endpoint/cluster/:clusterKey/command/:commandKey', function (req, res) {
+app.get('/devices/:ieeeAddr/endpoints/:endpoint/clusters/:clusterKey/commands/:commandKey', function (req, res) {
   const ieeeAddr = req.params.ieeeAddr;
   const endpoint = parseInt(req.params.endpoint)
   const clusterKey = parseInt(req.params.clusterKey)
