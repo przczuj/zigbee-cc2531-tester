@@ -49,15 +49,15 @@ app.get('/', function (req, res) {
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
-app.get('/devices/:ieeeAddr/endpoints/:endpoint/clusters/:clusterKey/attributes/:attributes', function (req, res) {
+app.get('/devices/:ieeeAddr/endpoints/:endpointId/clusters/:clusterKey/attributes/:attributes', function (req, res) {
   const ieeeAddr = req.params.ieeeAddr;
-  const endpoint = parseInt(req.params.endpoint)
+  const endpointId = parseInt(req.params.endpointId)
   const clusterKey = parseInt(req.params.clusterKey)
   const attributes = JSON.parse(req.params.attributes);
 
   const endpoint = coordinator
     .getDeviceByIeeeAddr(ieeeAddr)
-    .getEndpoint(endpoint);
+    .getEndpoint(endpointId);
 
   if (Array.isArray(attributes)) {
     endpoint.read(clusterKey, attributes);
@@ -70,9 +70,9 @@ app.get('/devices/:ieeeAddr/endpoints/:endpoint/clusters/:clusterKey/attributes/
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
-app.get('/devices/:ieeeAddr/endpoints/:endpoint/clusters/:clusterKey/commands/:commandKey', function (req, res) {
+app.get('/devices/:ieeeAddr/endpoints/:endpointId/clusters/:clusterKey/commands/:commandKey', function (req, res) {
   const ieeeAddr = req.params.ieeeAddr;
-  const endpoint = parseInt(req.params.endpoint)
+  const endpointId = parseInt(req.params.endpointId)
   const clusterKey = parseInt(req.params.clusterKey)
   const commandKey = parseInt(req.params.commandKey)
   const payload = JSON.parse(req.query.payload);
