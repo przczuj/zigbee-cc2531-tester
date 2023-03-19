@@ -85,6 +85,18 @@ app.get('/devices/:ieeeAddr/endpoints/:endpointId/clusters/:clusterKey/commands/
   res.send(wrapContentInPreWrap(getDatabaseContent()));
 });
 
+app.get('/devices/:ieeeAddr/powerSource/:powerSource', function (req, res) {
+  const ieeeAddr = req.params.ieeeAddr;
+
+  const device = coordinator
+      .getDeviceByIeeeAddr(ieeeAddr);
+
+  device.powerSource = req.params.powerSource;
+  device.save();
+
+  res.send(wrapContentInPreWrap(getDatabaseContent()));
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
